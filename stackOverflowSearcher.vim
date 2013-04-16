@@ -1,7 +1,7 @@
 "=============================================================================
-" File:        stackOverflowSearcher.vim
+
 " Author:      Nolen Royalty (nolen.royalty@gmail.com)
-" Version:     1.0
+" Version:     1.1
 "=============================================================================
 
 function! StackoverflowQuery()
@@ -17,10 +17,9 @@ if current_os == "Darwin":
 else:
     url_command = "firefox"
 
-PROMPT = "[n]ext, [p]rev, [q]uit, [o]pen"
+#PROMPT = "[n]ext, [p]rev, [q]uit, [o]pen"
 URL = "http://stackoverflow.com"
 SEARCH_URL = URL + "/search?q="
-#find_pattern = re.compile(r'<div class="summary">\s*?<h3><a href="([^"]+)"[^>]*>(.*?)\s+?<div class="excerpt">\s+(.*?)</div>', re.X|re.DOTALL)
 find_pattern = re.compile(r"""<div\ class="summary">\s*?<h3>   # smallest easily capturable div
                               <a\ href="([^"]+)"[^>]*>         # capture the link, and eat the chars until the href ends
                               (.*?)\s+?                        # everything after that until excerpt is the title
@@ -28,24 +27,37 @@ find_pattern = re.compile(r"""<div\ class="summary">\s*?<h3>   # smallest easily
                               </div>""", re.X|re.DOTALL)
 kill_pattern = r"(<[^>]*>|&[^;]*;|\n)"
 
-def python_input(message = PROMPT):
+def python_input(message="[n]ext, [p]rev, [q]uit, [o]pen"):
+    """
+    Obtains user input via vim calls.  Defaults to message for cycling through search results.
+    """
     vim.command('call inputsave()')
     vim.command("let user_input = input('" + message + ": ')")
     vim.command('call inputrestore()')
     return vim.eval('user_input')
 
 def get_query(linenum, queryprompt="Enter query, or leave blank to use current line"):
+    """
+    Gets the terms we are searching for.  If left empty, uses whatever is on the current line.
+    """
     query = python_input(queryprompt)
     if not query:
         query = buf[linenum-1]
     return query.strip('"')
 
 def get_questions(query):
+    """
+    Searches stack overflow for the target terms.
+    TODO figure out what this is really doing lol.
+    """
     response = urllib2.urlopen(SEARCH_URL + query).read()
     vals = re.findall(find_pattern, response)
     return [[x[0], re.sub(kill_pattern, "", x[1]).strip(), re.sub(kill_pattern, "", x[2]).strip()] for x in vals]
 
 def draw_question(value, linenum):
+    """
+    Takes a value?!?!?! and a linenumber, returns !?!?!?!
+    """
     url, title, summary = URL + value[0], value[1], [x.strip() for x in value[2].splitlines() if x.strip()]
     #cols = int(vim.eval("&columns"))
     cols = vim.current.window.width
