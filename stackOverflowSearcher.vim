@@ -94,11 +94,9 @@ vals = get_questions(query)
 location = 0
 
 vim.command("normal z.")
-vim.command("normal ")
-vim.command("normal ")
-vim.command("normal ")
-vim.command("normal ")
-vim.command("normal ")
+lines_to_scroll = 5
+for i in range(lines_to_scroll):
+    vim.command("normal ")
 vim.command("command! -nargs=1 Silent | execute ':silent !'.<q-args> | execute ':redraw!'")
 
 while vals:
@@ -124,6 +122,6 @@ if vals:
     vim.command("hi clear PyColorVisible")
     vim.command("hi clear PyColorInvisible")
     clear_question(question_length, linenum)
-    buf[linenum-1] = old_line
+buf[linenum-1] = old_line
 EOF
 endfunction
