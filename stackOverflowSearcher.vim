@@ -17,7 +17,6 @@ if current_os == "Darwin":
 else:
     url_command = "firefox"
 
-#PROMPT = "[n]ext, [p]rev, [q]uit, [o]pen"
 URL = "http://stackoverflow.com"
 SEARCH_URL = URL + "/search?q="
 find_pattern = re.compile(r"""<div\ class="summary">\s*?<h3>   # smallest easily capturable div
