@@ -1,0 +1,4 @@
+sosearch
+========
+
+so-vim-search
