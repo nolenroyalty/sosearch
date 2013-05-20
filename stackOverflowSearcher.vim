@@ -11,10 +11,7 @@ import urllib2
 import re
 
 current_os = vim.eval("substitute(system('uname'), '\n', '', '')")
-if current_os == "Darwin":
-    url_command = "open"
-else:
-    url_command = "firefox"
+url_command = "open" if current_os == "Darwin" else "firefox"
 
 URL = "http://stackoverflow.com"
 SEARCH_URL = URL + "/search?q="
