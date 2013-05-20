@@ -1,5 +1,4 @@
 "=============================================================================
-
 " Author:      Nolen Royalty (nolen.royalty@gmail.com)
 " Version:     1.1
 "=============================================================================
@@ -58,7 +57,6 @@ def draw_question(value, linenum):
     Takes a value?!?!?! and a linenumber, returns !?!?!?!
     """
     url, title, summary = URL + value[0], value[1], [x.strip() for x in value[2].splitlines() if x.strip()]
-    #cols = int(vim.eval("&columns"))
     cols = vim.current.window.width
     header_description = "Searching for '%s'     On Question %s of %s....----.." % (plain_query, location + 1, len(vals))
     header_description += " " * (cols - len(header_description) - 4)
@@ -74,9 +72,6 @@ def draw_question(value, linenum):
     buf.append(to_append, linenum) #add the mess that we've just put together to the current line.
     vim.command("normal 2j") #move the cursor down 2 lines
     vim.command("redraw") #call redraw to force the screen to refresh
-    #vim.command("echo %s" % (len(val) + len(to_append)-3))
-    vim.command("echo %s" % (len(value) + len(to_append)-3))
-    #return len(val) + len(to_append)-3 #
     return len(val) + len(to_append)-3 #
 
 def clear_question(vallen, linenum):
@@ -99,11 +94,13 @@ vals = get_questions(query)
 location = 0
 
 vim.command("normal z.")
+#You probably can't see it, but this is repeatedly sending ctrl-e to vim.  Believe it or not, this DOES NOT work if put in a loop.  Vim can be frustrating.
 vim.command("normal ")
 vim.command("normal ")
 vim.command("normal ")
 vim.command("normal ")
 vim.command("normal ")
+#Redraw
 vim.command("command! -nargs=1 Silent | execute ':silent !'.<q-args> | execute ':redraw!'")
 
 while vals:
@@ -131,4 +128,6 @@ if vals:
     clear_question(question_length, linenum)
 buf[linenum-1] = old_line
 EOF
+"clear the status line
+echo ''
 endfunction
