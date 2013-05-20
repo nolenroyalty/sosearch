@@ -52,6 +52,7 @@ def get_questions(query):
 def draw_question(value, linenum):
     """
     Takes a value?!?!?! and a linenumber, returns !?!?!?!
+    THIS IS WHY YOU COMMENT YOUR CODE AS YOU WRITE IT.  TODO: DECIPHER THIS AGAIN
     """
     url, title, summary = URL + value[0], value[1], [x.strip() for x in value[2].splitlines() if x.strip()]
     cols = vim.current.window.width
