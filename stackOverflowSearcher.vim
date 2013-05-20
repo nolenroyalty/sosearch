@@ -66,17 +66,23 @@ def draw_question(value, linenum):
 
     to_append = ["", header_description] + ["URL: %s" % url, "", "Question title: %s" % title, ""] + summary + ["", color_footer]
 
-    vim.command("hi PyColorVisible ctermbg=101 ctermfg=white")
+    vim.command("hi PyColorVisible ctermbg=101 ctermfg=white") #some awful code to make the header and footer look nice.  AWFUL AWFUL HACK
     vim.command("hi PyColorInvisible ctermbg=101 ctermfg=101")
     vim.command(r"match PyColorVisible /^Searching for .\{-} On Question \d\+ of \d\+/")
     vim.command(r"2match PyColorInvisible /\.\.\.\.----\.\..*$/")
 
-    buf.append(to_append, linenum)
-    vim.command("normal 2j")
-    vim.command("redraw")
-    return len(val) + len(to_append)-3
+    buf.append(to_append, linenum) #add the mess that we've just put together to the current line.
+    vim.command("normal 2j") #move the cursor down 2 lines
+    vim.command("redraw") #call redraw to force the screen to refresh
+    #vim.command("echo %s" % (len(val) + len(to_append)-3))
+    vim.command("echo %s" % (len(value) + len(to_append)-3))
+    #return len(val) + len(to_append)-3 #
+    return len(val) + len(to_append)-3 #
 
 def clear_question(vallen, linenum):
+    """
+    clears the current question from the screen
+    """
     del buf[linenum:linenum+vallen]
 
 
@@ -93,9 +99,11 @@ vals = get_questions(query)
 location = 0
 
 vim.command("normal z.")
-lines_to_scroll = 5
-for i in range(lines_to_scroll):
-    vim.command("normal ")
+vim.command("normal ")
+vim.command("normal ")
+vim.command("normal ")
+vim.command("normal ")
+vim.command("normal ")
 vim.command("command! -nargs=1 Silent | execute ':silent !'.<q-args> | execute ':redraw!'")
 
 while vals:
